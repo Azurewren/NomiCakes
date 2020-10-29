@@ -128,6 +128,10 @@ local RecipeCache = {} -- [recipeID] = info
 
 local f = CreateFrame('frame')
 
+local function GossipResize(titleButton)
+    titleButton:SetHeight( titleButton:GetTextHeight() + 2);
+end
+
 local RegisteredFrames = {} -- Holds a list of frames that should be registered for TRADE_SKILL_SHOW after our addon is finished
 local Callback
 local function RequestCookingStuff(callback)
@@ -207,9 +211,9 @@ local function DecorateNomi()
 		if count >= 5 then -- we have enough of an ingredient for nomi to display it
 			i = i + 1
 			local buttonName = NomiCakesGossipButtonName .. i
-			local button = _G[buttonName]
-			local buttonIcon = _G[buttonName .. 'GossipIcon'] -- check that the icon is for a work order, otherwise we might overwrite a quest button or something
-			if button and button:IsShown() and buttonIcon and buttonIcon:GetTexture():lower() == 'interface\\gossipframe\\workordergossipicon' then
+			local button = GossipFrame_GetTitleButton(i) -- local button = _G[buttonName]
+			local buttonIcon = GossipFrame_GetTitleButton(i).Icon -- local buttonIcon = _G[buttonName .. 'GossipIcon']
+			if button and button:IsShown() and buttonIcon and buttonIcon:GetTexture():lower() == 'interface/gossipframe/workordergossipicon' then -- changed \\ to /
 				if not HookedButtons[button] then
 					button:HookScript('OnEnter', function(self)
 						if not IsNomi then return end
